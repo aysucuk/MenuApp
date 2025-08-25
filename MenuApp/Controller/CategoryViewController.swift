@@ -1,3 +1,5 @@
+
+
 import UIKit
 
 class CategoriesViewController: UIViewController {
@@ -40,8 +42,8 @@ class CategoriesViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             topCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            topCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-            topCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            topCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10),
             topCollectionView.heightAnchor.constraint(equalToConstant: 60),
 
             tableView.topAnchor.constraint(equalTo: topCollectionView.bottomAnchor, constant: 12),

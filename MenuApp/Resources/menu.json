@@ -1,0 +1,223 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Yeməklər",
+      "subcategories": [
+        {
+          "id": 11,
+          "name": "İsti yeməklər",
+          "products": [
+            {
+              "id": 111,
+              "name": "Toyuq kababı",
+              "description": "Kömürdə bişmiş toyuq şiş",
+              "price": 12.50,
+              "imageURL": "https://example.com/images/toyuq-kababi.jpg"
+            },
+            {
+              "id": 112,
+              "name": "Ət qovurma",
+              "description": "Soğanla birlikdə qızardılmış dana əti",
+              "price": 14.00,
+              "imageURL": "https://example.com/images/et-qovurma.jpg"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Sac yeməkləri",
+          "products": [
+            {
+              "id": 121,
+              "name": "Toyuq sacı",
+              "description": "Pomidor və bibərlə bişirilmiş toyuq sacı",
+              "price": 16.00,
+              "imageURL": "https://example.com/images/toyuq-saci.jpg"
+            },
+            {
+              "id": 122,
+              "name": "Dana sacı",
+              "description": "Tərəvəzlərlə birlikdə dana sacı",
+              "price": 18.50,
+              "imageURL": "https://example.com/images/dana-saci.jpg"
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "name": "Qəlyanaltılar",
+          "products": [
+            {
+              "id": 131,
+              "name": "Pendir assortisi",
+              "description": "Azərbaycan pendirlərindən qarışıq",
+              "price": 7.50,
+              "imageURL": "https://example.com/images/pendir.jpg"
+            },
+            {
+              "id": 132,
+              "name": "Kükü",
+              "description": "Yaşıl otlarla bişmiş yumurta yeməyi",
+              "price": 6.00,
+              "imageURL": "https://example.com/images/kuku.jpg"
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "name": "Şorbalar",
+          "products": [
+            {
+              "id": 141,
+              "name": "Düşbərə",
+              "description": "Ətli xəmir xörəyi",
+              "price": 5.50,
+              "imageURL": "https://example.com/images/dushbere.jpg"
+            },
+            {
+              "id": 142,
+              "name": "Mercimek şorbası",
+              "description": "Qırmızı mərci ilə hazırlanmış şorba",
+              "price": 4.50,
+              "imageURL": "https://example.com/images/mercimek.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "İçkilər",
+      "subcategories": [
+        {
+          "id": 21,
+          "name": "Alkoqolsuz içkilər",
+          "products": [
+            {
+              "id": 211,
+              "name": "Coca Cola",
+              "description": "Soyuq qazlı içki",
+              "price": 2.00,
+              "imageURL": "https://example.com/images/cocacola.jpg"
+            },
+            {
+              "id": 212,
+              "name": "Fanta",
+              "description": "Portağal dadlı qazlı içki",
+              "price": 2.00,
+              "imageURL": "https://example.com/images/fanta.jpg"
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "Alkoqollu içkilər",
+          "subcategories": [
+            {
+              "id": 221,
+              "name": "Viskilər",
+              "products": [
+                {
+                  "id": 2211,
+                  "name": "Jack Daniel's",
+                  "description": "Amerikan viskisi",
+                  "price": 35.00,
+                  "imageURL": "https://example.com/images/jackdaniels.jpg"
+                },
+                {
+                  "id": 2212,
+                  "name": "Chivas Regal",
+                  "description": "Şotland viskisi",
+                  "price": 42.00,
+                  "imageURL": "https://example.com/images/chivas.jpg"
+                }
+              ]
+            },
+            {
+              "id": 222,
+              "name": "Araqlar",
+              "products": [
+                {
+                  "id": 2221,
+                  "name": "Finlandia",
+                  "description": "Fin arağı",
+                  "price": 28.00,
+                  "imageURL": "https://example.com/images/finlandia.jpg"
+                },
+                {
+                  "id": 2222,
+                  "name": "Absolut",
+                  "description": "İsveç arağı",
+                  "price": 30.00,
+                  "imageURL": "https://example.com/images/absolut.jpg"
+                }
+              ]
+            },
+            {
+              "id": 223,
+              "name": "Şərablar",
+              "products": [
+                {
+                  "id": 2231,
+                  "name": "Qırmızı şərab",
+                  "description": "Cabernet Sauvignon",
+                  "price": 25.00,
+                  "imageURL": "https://example.com/images/redwine.jpg"
+                },
+                {
+                  "id": 2232,
+                  "name": "Ağ şərab",
+                  "description": "Chardonnay",
+                  "price": 24.00,
+                  "imageURL": "https://example.com/images/whitewine.jpg"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Desertlər",
+      "products": [
+        {
+          "id": 301,
+          "name": "Paxlava",
+          "description": "Milli şirniyyat",
+          "price": 5.00,
+          "imageURL": "https://example.com/images/paxlava.jpg"
+        },
+        {
+          "id": 302,
+          "name": "Tiramisu",
+          "description": "İtalyan deserti",
+          "price": 6.00,
+          "imageURL": "https://example.com/images/tiramisu.jpg"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Digər",
+      "products": [
+        {
+          "id": 401,
+          "name": "Sous",
+          "description": "Ev üsulu souslar",
+          "price": 2.50,
+          "imageURL": "https://example.com/images/sous.jpg"
+        },
+        {
+          "id": 402,
+          "name": "Əlavələr",
+          "description": "Əlavə çörək və ya zeytun",
+          "price": 1.50,
+          "imageURL": "https://example.com/images/elave.jpg"
+        }
+      ]
+    }
+  ]
+}
+
