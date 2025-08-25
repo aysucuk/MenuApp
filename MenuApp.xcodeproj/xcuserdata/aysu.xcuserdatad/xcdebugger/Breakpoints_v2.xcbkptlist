@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "21FA548C-57D8-4060-AFFC-5D1934AE4D62"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D40D75B6-CC51-45BA-B994-B210424235C0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MenuApp/Controller/CategoryViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3"
+            endingLineNumber = "3"
+            landmarkName = "CategoriesViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "D40D75B6-CC51-45BA-B994-B210424235C0 - fe623f7eb01426d4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MenuApp.CategoriesViewController.__allocating_init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; MenuApp.CategoriesViewController"
+                  moduleName = "MenuApp.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aysu/Desktop/MenuApp/MenuApp/Controller/CategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "D40D75B6-CC51-45BA-B994-B210424235C0 - a90abaccb73cca32"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MenuApp.CategoriesViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; MenuApp.CategoriesViewController"
+                  moduleName = "MenuApp.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aysu/Desktop/MenuApp/MenuApp/Controller/CategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "5"
+                  endingLineNumber = "5">
+               </Location>
+               <Location
+                  uuid = "D40D75B6-CC51-45BA-B994-B210424235C0 - 5ffe098d215fb6ca"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MenuApp.CategoriesViewController.__allocating_init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;MenuApp.CategoriesViewController&gt;"
+                  moduleName = "MenuApp.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aysu/Desktop/MenuApp/MenuApp/Controller/CategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "D40D75B6-CC51-45BA-B994-B210424235C0 - f9f91342c2a86818"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MenuApp.CategoriesViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;MenuApp.CategoriesViewController&gt;"
+                  moduleName = "MenuApp.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aysu/Desktop/MenuApp/MenuApp/Controller/CategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "5"
+                  endingLineNumber = "5">
+               </Location>
+               <Location
+                  uuid = "D40D75B6-CC51-45BA-B994-B210424235C0 - c5a806bc7dd7767"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MenuApp.CategoriesViewController.__deallocating_deinit"
+                  moduleName = "MenuApp.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aysu/Desktop/MenuApp/MenuApp/Controller/CategoryViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
