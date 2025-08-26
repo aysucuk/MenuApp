@@ -12,14 +12,14 @@ struct Product: Codable {
     let name: String
     let description: String
     let price: Double
-    let imageURL: String
+    let imageName: String  
 }
 
 struct Subcategory: Codable {
     let id: Int
     let name: String
     let products: [Product]?
-    let subcategories: [Subcategory]?  // alkoqollu içkilər kimi nested varsa
+    let subcategories: [Subcategory]?
 }
 
 struct Category: Codable {

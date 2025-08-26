@@ -13,14 +13,14 @@
               "name": "Toyuq kababı",
               "description": "Kömürdə bişmiş toyuq şiş",
               "price": 12.50,
-              "imageURL": "https://example.com/images/toyuq-kababi.jpg"
+              "imageName": "toyuq_kababi"
             },
             {
               "id": 112,
               "name": "Ət qovurma",
               "description": "Soğanla birlikdə qızardılmış dana əti",
               "price": 14.00,
-              "imageURL": "https://example.com/images/et-qovurma.jpg"
+              "imageName": "et_qovurma"
             }
           ]
         },
@@ -33,14 +33,14 @@
               "name": "Toyuq sacı",
               "description": "Pomidor və bibərlə bişirilmiş toyuq sacı",
               "price": 16.00,
-              "imageURL": "https://example.com/images/toyuq-saci.jpg"
+              "imageName": "toyuq_saci"
             },
             {
               "id": 122,
               "name": "Dana sacı",
               "description": "Tərəvəzlərlə birlikdə dana sacı",
               "price": 18.50,
-              "imageURL": "https://example.com/images/dana-saci.jpg"
+              "imageName": "dana_saci"
             }
           ]
         },
@@ -53,14 +53,14 @@
               "name": "Pendir assortisi",
               "description": "Azərbaycan pendirlərindən qarışıq",
               "price": 7.50,
-              "imageURL": "https://example.com/images/pendir.jpg"
+              "imageName": "pendir"
             },
             {
               "id": 132,
               "name": "Kükü",
               "description": "Yaşıl otlarla bişmiş yumurta yeməyi",
               "price": 6.00,
-              "imageURL": "https://example.com/images/kuku.jpg"
+              "imageName": "kuku"
             }
           ]
         },
@@ -73,14 +73,14 @@
               "name": "Düşbərə",
               "description": "Ətli xəmir xörəyi",
               "price": 5.50,
-              "imageURL": "https://example.com/images/dushbere.jpg"
+              "imageName": "dushbere"
             },
             {
               "id": 142,
               "name": "Mercimek şorbası",
               "description": "Qırmızı mərci ilə hazırlanmış şorba",
               "price": 4.50,
-              "imageURL": "https://example.com/images/mercimek.jpg"
+              "imageName": "mercimek"
             }
           ]
         }
@@ -99,80 +99,62 @@
               "name": "Coca Cola",
               "description": "Soyuq qazlı içki",
               "price": 2.00,
-              "imageURL": "https://example.com/images/cocacola.jpg"
+              "imageName": "cocacola"
             },
             {
               "id": 212,
               "name": "Fanta",
               "description": "Portağal dadlı qazlı içki",
               "price": 2.00,
-              "imageURL": "https://example.com/images/fanta.jpg"
+              "imageName": "fanta"
             }
           ]
         },
         {
           "id": 22,
           "name": "Alkoqollu içkilər",
-          "subcategories": [
+          "products": [
             {
               "id": 221,
-              "name": "Viskilər",
-              "products": [
-                {
-                  "id": 2211,
-                  "name": "Jack Daniel's",
-                  "description": "Amerikan viskisi",
-                  "price": 35.00,
-                  "imageURL": "https://example.com/images/jackdaniels.jpg"
-                },
-                {
-                  "id": 2212,
-                  "name": "Chivas Regal",
-                  "description": "Şotland viskisi",
-                  "price": 42.00,
-                  "imageURL": "https://example.com/images/chivas.jpg"
-                }
-              ]
+              "name": "Jack Daniel's",
+              "description": "Amerikan viskisi",
+              "price": 35.00,
+              "imageName": "jack_daniels"
             },
             {
               "id": 222,
-              "name": "Araqlar",
-              "products": [
-                {
-                  "id": 2221,
-                  "name": "Finlandia",
-                  "description": "Fin arağı",
-                  "price": 28.00,
-                  "imageURL": "https://example.com/images/finlandia.jpg"
-                },
-                {
-                  "id": 2222,
-                  "name": "Absolut",
-                  "description": "İsveç arağı",
-                  "price": 30.00,
-                  "imageURL": "https://example.com/images/absolut.jpg"
-                }
-              ]
+              "name": "Chivas Regal",
+              "description": "Şotland viskisi",
+              "price": 42.00,
+              "imageName": "chivas"
             },
             {
               "id": 223,
-              "name": "Şərablar",
-              "products": [
-                {
-                  "id": 2231,
-                  "name": "Qırmızı şərab",
-                  "description": "Cabernet Sauvignon",
-                  "price": 25.00,
-                  "imageURL": "https://example.com/images/redwine.jpg"
-                },
-                {
-                  "id": 2232,
-                  "name": "Ağ şərab",
-                  "description": "Chardonnay",
-                  "price": 24.00,
-                  "imageURL": "https://example.com/images/whitewine.jpg"
-                }
-              ]
+              "name": "Finlandia",
+              "description": "Fin arağı",
+              "price": 28.00,
+              "imageName": "finlandia"
+            },
+            {
+              "id": 224,
+              "name": "Absolut",
+              "description": "İsveç arağı",
+              "price": 30.00,
+              "imageName": "absolut"
+            },
+            {
+              "id": 225,
+              "name": "Qırmızı şərab",
+              "description": "Cabernet Sauvignon",
+              "price": 25.00,
+              "imageName": "red_wine"
+            },
+            {
+              "id": 226,
+              "name": "Ağ şərab",
+              "description": "Chardonnay",
+              "price": 24.00,
+              "imageName": "white_wine"
             }
           ]
         }
@@ -181,20 +163,46 @@
     {
       "id": 3,
       "name": "Desertlər",
-      "products": [
+      "subcategories": [
         {
-          "id": 301,
-          "name": "Paxlava",
-          "description": "Milli şirniyyat",
-          "price": 5.00,
-          "imageURL": "https://example.com/images/paxlava.jpg"
+          "id": 31,
+          "name": "Sudlu şirniyyat",
+          "products": [
+            {
+              "id": 301,
+              "name": "Paxlava",
+              "description": "Milli şirniyyat",
+              "price": 5.00,
+              "imageName": "paxlava"
+            },
+            {
+              "id": 302,
+              "name": "Pudinq",
+              "description": "İtalyan deserti",
+              "price": 6.00,
+              "imageName": "pudinq"
+            }
+          ]
         },
         {
-          "id": 302,
-          "name": "Tiramisu",
-          "description": "İtalyan deserti",
-          "price": 6.00,
-          "imageURL": "https://example.com/images/tiramisu.jpg"
+          "id": 32,
+          "name": "Şərbətli şirniyyat",
+          "products": [
+            {
+              "id": 303,
+              "name": "Şəkərbura",
+              "description": "Qozlu şirniyyat",
+              "price": 4.50,
+              "imageName": "sekerbura"
+            },
+            {
+              "id": 304,
+              "name": "Paxlava",
+              "description": "Milli şirniyyat",
+              "price": 5.00,
+              "imageName": "paxlava"
+            }
+          ]
         }
       ]
     },
@@ -207,17 +215,16 @@
           "name": "Sous",
           "description": "Ev üsulu souslar",
           "price": 2.50,
-          "imageURL": "https://example.com/images/sous.jpg"
+          "imageName": "sous"
         },
         {
           "id": 402,
           "name": "Əlavələr",
           "description": "Əlavə çörək və ya zeytun",
           "price": 1.50,
-          "imageURL": "https://example.com/images/elave.jpg"
+          "imageName": "elave"
         }
       ]
     }
   ]
 }
-

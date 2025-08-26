@@ -57,6 +57,7 @@ class CategoriesViewController: UIViewController {
 
     private func setupTableView() {
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +128,21 @@ extension CategoriesViewController: UITableViewDataSource {
         return cell
     }
 }
+
+extension CategoriesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let category = viewModel.categories[viewModel.selectedCategoryIndex]
+        guard let subcategories = category.subcategories, indexPath.row < subcategories.count else { return }
+        let subcategory = subcategories[indexPath.row]
+        guard let products = subcategory.products else { return }
+
+        let productsVM = ProductsViewModelImpl(products: products, title: subcategory.name)
+
+        let productsVC = ProductsViewController(viewModel: productsVM)
+        navigationController?.pushViewController(productsVC, animated: true)
+    }
+}
+
 
 
 extension CategoriesViewController: CategoriesViewModelDelegate {

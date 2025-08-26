@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "ТЕЛЯЧЬЯ-ВЫРЕЗКА-С-ВИШНЕЙ.png.600x600_q85_box-0,0,600,600_crop_detail.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
