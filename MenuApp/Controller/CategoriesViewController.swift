@@ -14,8 +14,8 @@ class CategoriesViewController: UIViewController {
     private let topCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 18
-        layout.minimumInteritemSpacing = 18
+        layout.minimumLineSpacing = 6
+        layout.minimumInteritemSpacing = 6
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
 
@@ -37,6 +37,7 @@ class CategoriesViewController: UIViewController {
         
         title = "Menyu"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
 
         setupCollectionView()
         setupTableView()
@@ -136,10 +137,15 @@ extension CategoriesViewController: UITableViewDelegate {
         let subcategory = subcategories[indexPath.row]
         guard let products = subcategory.products else { return }
 
-        let productsVM = ProductsViewModelImpl(products: products, title: subcategory.name)
-
-        let productsVC = ProductsViewController(viewModel: productsVM)
+        let productsVC = GenericTableViewController<Product, ProductCell>(
+            items: products,
+            configureCell: { cell, product in
+                cell.configure(with: product)
+            },
+            title: subcategory.name
+        )
         navigationController?.pushViewController(productsVC, animated: true)
+
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  ProductsViewController.swift
+//  TableViewController.swift
 //  MenuApp
 //
 //  Created by Aysu Sadikhova on 26.08.25.
@@ -7,15 +7,22 @@
 
 import UIKit
 
-class ProductsViewController: UIViewController {
+class GenericTableViewController<Item, Cell: UITableViewCell>: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    private let viewModel: ProductsViewModelProtocol
     private let tableView = UITableView()
+    private let items: [Item]
+    private let configureCell: (Cell, Item) -> Void
+    private let didSelectItem: ((Item) -> Void)?
 
-    init(viewModel: ProductsViewModelProtocol) {
-        self.viewModel = viewModel
+    init(items: [Item],
+         configureCell: @escaping (Cell, Item) -> Void,
+         didSelectItem: ((Item) -> Void)? = nil,
+         title: String? = nil) {
+        self.items = items
+        self.configureCell = configureCell
+        self.didSelectItem = didSelectItem
         super.init(nibName: nil, bundle: nil)
-        self.title = viewModel.title
+        self.title = title
     }
 
     required init?(coder: NSCoder) {
@@ -27,7 +34,8 @@ class ProductsViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         tableView.dataSource = self
-        tableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
+        tableView.delegate = self
+        tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -38,22 +46,23 @@ class ProductsViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-}
-
-extension ProductsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.products.count
+        return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath) as? ProductCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? Cell else {
             return UITableViewCell()
         }
-
-        let product = viewModel.products[indexPath.row]
-        cell.configure(with: product)
+        let item = items[indexPath.row]
+        configureCell(cell, item)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        didSelectItem?(item)
     }
 }
 
