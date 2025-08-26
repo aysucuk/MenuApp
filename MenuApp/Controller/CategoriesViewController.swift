@@ -1,8 +1,15 @@
-
+//
+//  CategoriesViewController.swift
+//  MenuApp
+//
+//  Created by Aysu Sadıxova on 25.08.25.
+//
 
 import UIKit
 
 class CategoriesViewController: UIViewController {
+    
+    private let viewModel: CategoriesViewModelProtocol
 
     private let topCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -14,6 +21,15 @@ class CategoriesViewController: UIViewController {
 
     private let tableView = UITableView()
     private var selectedCategoryIndex: Int = 0
+    
+    init(viewModel: CategoriesViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,28 +38,35 @@ class CategoriesViewController: UIViewController {
         title = "Menyu"
         navigationController?.navigationBar.prefersLargeTitles = true
 
+        setupCollectionView()
+        setupTableView()
+        setupLayout()
 
-        // Top CollectionView
+        viewModel.delegate = self
+        viewModel.loadMenu()
+    }
+    
+    private func setupCollectionView() {
         topCollectionView.dataSource = self
         topCollectionView.delegate = self
         topCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         topCollectionView.showsHorizontalScrollIndicator = false
+        view.addSubview(topCollectionView)
+        topCollectionView.translatesAutoresizingMaskIntoConstraints = false
+    }
 
-        // TableView
+    private func setupTableView() {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
-        // Layout
-        view.addSubview(topCollectionView)
         view.addSubview(tableView)
-
-        topCollectionView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+    }
 
+    private func setupLayout() {
         NSLayoutConstraint.activate([
             topCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
             topCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            topCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10),
+            topCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             topCollectionView.heightAnchor.constraint(equalToConstant: 60),
 
             tableView.topAnchor.constraint(equalTo: topCollectionView.bottomAnchor, constant: 12),
@@ -53,22 +76,20 @@ class CategoriesViewController: UIViewController {
         ])
     }
 }
-
 extension CategoriesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        CategoriesData.categories.count
+        return viewModel.categories.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        cell.contentView.subviews.forEach { $0.removeFromSuperview() }
 
-        // Label əlavə edirik
         let label = UILabel()
-        label.text = CategoriesData.categories[indexPath.item].name
+        label.text = viewModel.categories[indexPath.item].name
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 14, weight: .medium)
-
-        cell.contentView.subviews.forEach { $0.removeFromSuperview() }
         cell.contentView.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -76,35 +97,45 @@ extension CategoriesViewController: UICollectionViewDataSource, UICollectionView
             label.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
         ])
 
-        cell.backgroundColor = (indexPath.item == selectedCategoryIndex) ? .systemBlue : .systemGray5
+        cell.backgroundColor = (indexPath.item == viewModel.selectedCategoryIndex) ? .systemOrange : .systemGray5
         cell.layer.cornerRadius = 12
-
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedCategoryIndex = indexPath.item
+        viewModel.selectedCategoryIndex = indexPath.item
         collectionView.reloadData()
         tableView.reloadData()
     }
 
-    // Cell ölçüsü
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text = CategoriesData.categories[indexPath.item].name
-        let width = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 20, weight: .medium)]).width + 24
+        let text = viewModel.categories[indexPath.item].name
+        let width = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 20, weight: .medium)]).width + 24
         return CGSize(width: width, height: 40)
     }
 }
 
+
 extension CategoriesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        CategoriesData.categories[selectedCategoryIndex].children?.count ?? 0
+        return viewModel.numberOfRowsInSelectedCategory()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let child = CategoriesData.categories[selectedCategoryIndex].children?[indexPath.row]
-        cell.textLabel?.text = child?.name
+        cell.textLabel?.text = viewModel.titleForRow(at: indexPath.row)
         return cell
+    }
+}
+
+
+extension CategoriesViewController: CategoriesViewModelDelegate {
+    func didLoadMenu() {
+        topCollectionView.reloadData()
+        tableView.reloadData()
+    }
+
+    func didFailLoadingMenu(error: Error) {
+        print("Error loading menu: \(error.localizedDescription)")
     }
 }

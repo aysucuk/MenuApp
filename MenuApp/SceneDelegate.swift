@@ -11,21 +11,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-        func scene(
-            _ scene: UIScene,
-            willConnectTo session: UISceneSession,
-            options connectionOptions: UIScene.ConnectionOptions
-        ) {
-            guard let windowScene = (scene as? UIWindowScene) else { return }
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
 
-            let rootVC = CategoriesViewController()
+        let viewModel = CategoriesViewModelImpl()
 
-            let navController = UINavigationController(rootViewController: rootVC)
+        let rootVC = CategoriesViewController(viewModel: viewModel)
 
-            window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = navController
-            window?.makeKeyAndVisible()
-        }
+        let navController = UINavigationController(rootViewController: rootVC)
+
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
+    }
+
 
     func sceneDidDisconnect(_ scene: UIScene) {
 

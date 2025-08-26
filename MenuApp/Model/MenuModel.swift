@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Product
 struct Product: Codable {
     let id: Int
     let name: String
@@ -16,7 +15,6 @@ struct Product: Codable {
     let imageURL: String
 }
 
-// MARK: - Subcategory
 struct Subcategory: Codable {
     let id: Int
     let name: String
@@ -24,7 +22,6 @@ struct Subcategory: Codable {
     let subcategories: [Subcategory]?  // alkoqollu içkilər kimi nested varsa
 }
 
-// MARK: - Category
 struct Category: Codable {
     let id: Int
     let name: String
@@ -32,7 +29,6 @@ struct Category: Codable {
     let products: [Product]?
 }
 
-// MARK: - Root JSON
 struct Menu: Codable {
     let categories: [Category]
 }

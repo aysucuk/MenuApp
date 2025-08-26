@@ -5,12 +5,24 @@
 //  Created by Aysu Sadıxova on 25.08.25.
 //
 
+import Foundation
+
+protocol CategoriesViewModelProtocol: AnyObject {
+    var categories: [Category] { get }
+    var selectedCategoryIndex: Int { get set }
+
+    func loadMenu()
+    func numberOfRowsInSelectedCategory() -> Int
+    func titleForRow(at index: Int) -> String
+    var delegate: CategoriesViewModelDelegate? { get set }
+}
+
 protocol CategoriesViewModelDelegate: AnyObject {
     func didLoadMenu()
     func didFailLoadingMenu(error: Error)
 }
 
-class CategoriesViewModel {
+class CategoriesViewModelImpl: CategoriesViewModelProtocol {
     weak var delegate: CategoriesViewModelDelegate?
     private var menu: Menu?
     var selectedCategoryIndex: Int = 0
@@ -34,9 +46,11 @@ class CategoriesViewModel {
     }
 
     func numberOfRowsInSelectedCategory() -> Int {
+        guard categories.indices.contains(selectedCategoryIndex) else { return 0 }
         let category = categories[selectedCategoryIndex]
         return category.subcategories?.count ?? category.products?.count ?? 0
     }
+
 
     func titleForRow(at index: Int) -> String {
         let category = categories[selectedCategoryIndex]
