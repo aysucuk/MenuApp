@@ -21,26 +21,75 @@
               "description": "Soğanla birlikdə qızardılmış dana əti",
               "price": 14.00,
               "imageName": "et_qovurma"
-            }
-          ]
-        },
-        {
-          "id": 12,
-          "name": "Sac yeməkləri",
-          "products": [
+            },
             {
-              "id": 121,
+              "id": 113,
+              "name": "Şah plov",
+              "description": "6-8 nəfərlik milli şah plov",
+              "price": 85.00,
+              "imageName": "sahplov"
+            },
+            {
+              "id": 114,
+              "name": "Dolma",
+              "description": "Üzüm yarpağı ilə bükülmüş dolma",
+              "price": 8.50,
+              "imageName": "dolma"
+            },
+            {
+              "id": 115,
+              "name": "Qovurma",
+              "description": "Naxçıvanın milli yeməyi",
+              "price": 25.00,
+              "imageName": "qovurma"
+            },
+            {
+              "id": 116,
+              "name": "Lazanya",
+              "description": "İtalyan mətbəxinin incisi",
+              "price": 18.00,
+              "imageName": "lazanya"
+            },
+            {
+              "id": 117,
               "name": "Toyuq sacı",
               "description": "Pomidor və bibərlə bişirilmiş toyuq sacı",
               "price": 16.00,
               "imageName": "toyuq_saci"
             },
             {
-              "id": 122,
+              "id": 118,
               "name": "Dana sacı",
               "description": "Tərəvəzlərlə birlikdə dana sacı",
               "price": 18.50,
               "imageName": "dana_saci"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Salatlar",
+          "products": [
+            {
+              "id": 121,
+              "name": "Sezar salatı",
+              "description": "Toyuq filesi ilə sezar salatı",
+              "price": 17.00,
+              "imageName": "sezar"
+            },
+            {
+              "id": 122,
+              "name": "Çoban salatı",
+              "description": "Yaşıl otlarla pomidor və xiyar",
+              "price": 5.00,
+              "imageName": "cobansalati"
+            },
+            {
+              "id": 123,
+              "name": "Badımcan salatı",
+              "description": "Turşa şirin sous ilə xırt-xırt badımcan salatı",
+              "price": 8.00,
+              "imageName": "badımcan"
             }
           ]
         },
@@ -61,6 +110,13 @@
               "description": "Yaşıl otlarla bişmiş yumurta yeməyi",
               "price": 6.00,
               "imageName": "kuku"
+            },
+            {
+              "id": 133,
+              "name": "Badımcan salatı",
+              "description": "Turşa şirin sous ilə xırt-xırt badımcan salatı",
+              "price": 8.00,
+              "imageName": "badımcan"
             }
           ]
         },
@@ -107,6 +163,13 @@
               "description": "Portağal dadlı qazlı içki",
               "price": 2.00,
               "imageName": "fanta"
+            },
+            {
+              "id": 213,
+              "name": "Su",
+              "description": "Qazsız Sirab",
+              "price": 1.00,
+              "imageName": "sirab"
             }
           ]
         },
@@ -166,17 +229,17 @@
       "subcategories": [
         {
           "id": 31,
-          "name": "Sudlu şirniyyat",
+          "name": "Südlü şirniyyatlar",
           "products": [
             {
-              "id": 301,
-              "name": "Paxlava",
-              "description": "Milli şirniyyat",
-              "price": 5.00,
-              "imageName": "paxlava"
+              "id": 311,
+              "name": "Tiramisu",
+              "description": "İtalyan deserti",
+              "price": 10.00,
+              "imageName": "tiramisu"
             },
             {
-              "id": 302,
+              "id": 312,
               "name": "Pudinq",
               "description": "İtalyan deserti",
               "price": 6.00,
@@ -186,17 +249,17 @@
         },
         {
           "id": 32,
-          "name": "Şərbətli şirniyyat",
+          "name": "Şərbətli şirniyyatlar",
           "products": [
             {
-              "id": 303,
+              "id": 321,
               "name": "Şəkərbura",
               "description": "Qozlu şirniyyat",
               "price": 4.50,
               "imageName": "sekerbura"
             },
             {
-              "id": 304,
+              "id": 322,
               "name": "Paxlava",
               "description": "Milli şirniyyat",
               "price": 5.00,
@@ -209,22 +272,48 @@
     {
       "id": 4,
       "name": "Digər",
-      "products": [
-        {
-          "id": 401,
-          "name": "Sous",
-          "description": "Ev üsulu souslar",
-          "price": 2.50,
-          "imageName": "sous"
-        },
-        {
-          "id": 402,
-          "name": "Əlavələr",
-          "description": "Əlavə çörək və ya zeytun",
-          "price": 1.50,
-          "imageName": "elave"
-        }
-      ]
+      "subcategories": [
+          {
+              "id": 41,
+              "name": "Sous",
+              "products": [
+                  {
+                      "id": 411,
+                      "name": "Pendir sousu",
+                      "description": "Çedar pendiri",
+                      "price": 2.50,
+                      "imageName": "pendirsousu"
+                  },
+                  {
+                      "id": 412,
+                      "name": "Barbekü sousu",
+                      "description": "Şirin barbekü sousu",
+                      "price": 1.50,
+                      "imageName": "barbekusousu"
+                  }
+              ]
+          },
+          {
+              "id": 42,
+              "name": "Əlavələr",
+              "products": [
+                  {
+                      "id": 421,
+                      "name": "Çörək",
+                      "description": "Təndirdə bişmiş çörək",
+                      "price": 1.50,
+                      "imageName": "tendircoreyi"
+                  },
+                  {
+                      "id": 422,
+                      "name": "Lavaş",
+                      "description": "Sac lavaşı",
+                      "price": 1.50,
+                      "imageName": "lavas"
+                  }
+              ]
+          }
+    ]
     }
   ]
 }
