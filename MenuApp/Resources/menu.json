@@ -12,14 +12,14 @@
               "id": 111,
               "name": "Toyuq kababı",
               "description": "Kömürdə bişmiş toyuq şiş",
-              "price": 12.50,
+              "price": 15.50,
               "imageName": "toyuq_kababi"
             },
             {
               "id": 112,
               "name": "Ət qovurma",
               "description": "Soğanla birlikdə qızardılmış dana əti",
-              "price": 14.00,
+              "price": 20.00,
               "imageName": "et_qovurma"
             },
             {
@@ -33,7 +33,7 @@
               "id": 114,
               "name": "Dolma",
               "description": "Üzüm yarpağı ilə bükülmüş dolma",
-              "price": 8.50,
+              "price": 12.00,
               "imageName": "dolma"
             },
             {
@@ -54,14 +54,14 @@
               "id": 117,
               "name": "Toyuq sacı",
               "description": "Pomidor və bibərlə bişirilmiş toyuq sacı",
-              "price": 16.00,
+              "price": 28.00,
               "imageName": "toyuq_saci"
             },
             {
               "id": 118,
               "name": "Dana sacı",
               "description": "Tərəvəzlərlə birlikdə dana sacı",
-              "price": 18.50,
+              "price": 35.50,
               "imageName": "dana_saci"
             }
           ]
@@ -74,21 +74,21 @@
               "id": 121,
               "name": "Sezar salatı",
               "description": "Toyuq filesi ilə sezar salatı",
-              "price": 17.00,
+              "price": 18.00,
               "imageName": "sezar"
             },
             {
               "id": 122,
               "name": "Çoban salatı",
               "description": "Yaşıl otlarla pomidor və xiyar",
-              "price": 5.00,
+              "price": 8.00,
               "imageName": "cobansalati"
             },
             {
               "id": 123,
               "name": "Badımcan salatı",
               "description": "Turşa şirin sous ilə xırt-xırt badımcan salatı",
-              "price": 8.00,
+              "price": 12.00,
               "imageName": "badımcan"
             }
           ]
@@ -101,21 +101,21 @@
               "id": 131,
               "name": "Pendir assortisi",
               "description": "Azərbaycan pendirlərindən qarışıq",
-              "price": 7.50,
+              "price": 35.00,
               "imageName": "pendir"
             },
             {
               "id": 132,
               "name": "Kükü",
               "description": "Yaşıl otlarla bişmiş yumurta yeməyi",
-              "price": 6.00,
+              "price": 8.00,
               "imageName": "kuku"
             },
             {
               "id": 133,
               "name": "Badımcan salatı",
               "description": "Turşa şirin sous ilə xırt-xırt badımcan salatı",
-              "price": 8.00,
+              "price": 12.00,
               "imageName": "badımcan"
             }
           ]
@@ -128,14 +128,14 @@
               "id": 141,
               "name": "Düşbərə",
               "description": "Ətli xəmir xörəyi",
-              "price": 5.50,
+              "price": 9.50,
               "imageName": "dushbere"
             },
             {
               "id": 142,
               "name": "Mercimek şorbası",
               "description": "Qırmızı mərci ilə hazırlanmış şorba",
-              "price": 4.50,
+              "price": 8.50,
               "imageName": "mercimek"
             }
           ]
@@ -154,21 +154,21 @@
               "id": 211,
               "name": "Coca Cola",
               "description": "Soyuq qazlı içki",
-              "price": 2.00,
+              "price": 4.00,
               "imageName": "cocacola"
             },
             {
               "id": 212,
               "name": "Fanta",
               "description": "Portağal dadlı qazlı içki",
-              "price": 2.00,
+              "price": 4.00,
               "imageName": "fanta"
             },
             {
               "id": 213,
               "name": "Su",
               "description": "Qazsız Sirab",
-              "price": 1.00,
+              "price": 2.00,
               "imageName": "sirab"
             }
           ]
@@ -181,7 +181,7 @@
               "id": 221,
               "name": "Jack Daniel's",
               "description": "Amerikan viskisi",
-              "price": 35.00,
+              "price": 85.00,
               "imageName": "jack_daniels"
             },
             {
@@ -216,7 +216,7 @@
               "id": 226,
               "name": "Ağ şərab",
               "description": "Chardonnay",
-              "price": 24.00,
+              "price": 25.00,
               "imageName": "white_wine"
             }
           ]
@@ -242,7 +242,7 @@
               "id": 312,
               "name": "Pudinq",
               "description": "İtalyan deserti",
-              "price": 6.00,
+              "price": 8.00,
               "imageName": "pudinq"
             }
           ]
@@ -255,14 +255,14 @@
               "id": 321,
               "name": "Şəkərbura",
               "description": "Qozlu şirniyyat",
-              "price": 4.50,
+              "price": 5.00,
               "imageName": "sekerbura"
             },
             {
               "id": 322,
               "name": "Paxlava",
               "description": "Milli şirniyyat",
-              "price": 5.00,
+              "price": 6.00,
               "imageName": "paxlava"
             }
           ]

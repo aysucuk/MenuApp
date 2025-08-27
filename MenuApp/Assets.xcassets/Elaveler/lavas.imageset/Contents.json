@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "kepekli-lavas-3642d13a-47f3-466e-8174-5d63d6ff8d9d.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
