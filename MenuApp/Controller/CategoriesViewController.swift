@@ -22,6 +22,16 @@ class CategoriesViewController: UIViewController {
     private let tableView = UITableView()
     private var selectedCategoryIndex: Int = 0
     
+    private let cartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "cart"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .systemOrange
+        button.layer.cornerRadius = 30
+        button.clipsToBounds = true
+        return button
+    }()
+    
     init(viewModel: CategoriesViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -137,7 +147,7 @@ extension CategoriesViewController: UITableViewDelegate {
         let subcategory = subcategories[indexPath.row]
         guard let products = subcategory.products else { return }
 
-        let productsVC = GenericTableViewController<Product, ProductCell>(
+        let productsVC = TableViewController<Product, ProductCell>(
             items: products,
             configureCell: { cell, product in
                 cell.configure(with: product)
@@ -160,4 +170,22 @@ extension CategoriesViewController: CategoriesViewModelDelegate {
     func didFailLoadingMenu(error: Error) {
         print("Error loading menu: \(error.localizedDescription)")
     }
+    
+    @objc private func openCart() {
+        let items = CartManager.shared.items
+        let cartVC = TableViewController<Product, ProductCell>(
+            items: items,
+            configureCell: { cell, product in
+                cell.configure(with: product)
+            },
+            title: "Səbət"
+        )
+        navigationController?.pushViewController(cartVC, animated: true)
+    }
+
+    @objc private func updateCartBadge() {
+        let count = CartManager.shared.items.count
+        cartButton.setTitle(count > 0 ? "\(count)" : "", for: .normal)
+    }
 }
+

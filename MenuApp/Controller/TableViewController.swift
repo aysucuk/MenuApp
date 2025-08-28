@@ -7,12 +7,23 @@
 
 import UIKit
 
-class GenericTableViewController<Item, Cell: UITableViewCell>: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     private let tableView = UITableView()
     private let items: [Item]
     private let configureCell: (Cell, Item) -> Void
     private let didSelectItem: ((Item) -> Void)?
+    
+    private let cartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "cart"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .systemOrange
+        button.layer.cornerRadius = 30
+        button.clipsToBounds = true
+        return button
+    }()
+
 
     init(items: [Item],
          configureCell: @escaping (Cell, Item) -> Void,
@@ -36,14 +47,22 @@ class GenericTableViewController<Item, Cell: UITableViewCell>: UIViewController,
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
+        
         view.addSubview(tableView)
+        view.addSubview(cartButton)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        cartButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            cartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            cartButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            cartButton.widthAnchor.constraint(equalToConstant: 60),
+            cartButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 
@@ -57,6 +76,14 @@ class GenericTableViewController<Item, Cell: UITableViewCell>: UIViewController,
         }
         let item = items[indexPath.row]
         configureCell(cell, item)
+        
+        if let productCell = cell as? ProductCell, let product = item as? Product {
+            productCell.onAddToCart = {
+                CartManager.shared.add(product)
+                NotificationCenter.default.post(name: .cartUpdated, object: nil)
+            }
+        }
+        
         return cell
     }
 
@@ -64,5 +91,7 @@ class GenericTableViewController<Item, Cell: UITableViewCell>: UIViewController,
         let item = items[indexPath.row]
         didSelectItem?(item)
     }
+    
+    
 }
 
