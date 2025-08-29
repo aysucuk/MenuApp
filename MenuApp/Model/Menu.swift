@@ -1,5 +1,5 @@
 //
-//  MenuModel.swift
+//  Menu.swift
 //  MenuApp
 //
 //  Created by Aysu Sadıxova on 25.08.25.
@@ -12,7 +12,7 @@ struct Product: Codable {
     let name: String
     let description: String
     let price: Double
-    let imageName: String  
+    let imageName: String
 }
 
 struct Subcategory: Codable {

@@ -88,8 +88,29 @@
               "id": 123,
               "name": "Badımcan salatı",
               "description": "Turşa şirin sous ilə xırt-xırt salat",
-              "price": 12.00,
+              "price": 10.00,
               "imageName": "badımcan"
+            },
+            {
+              "id": 124,
+              "name": "Mimoza salatı",
+              "description": "Üzərinə pendir əlavəsi ilə",
+              "price": 10.00,
+              "imageName": "mimoza"
+            },
+            {
+              "id": 125,
+              "name": "Çuğundur salatı",
+              "description": "Sarımsaq və qozlu sous ilə",
+              "price": 10.00,
+              "imageName": "cugundursalati"
+            },
+            {
+              "id": 126,
+              "name": "Paytaxt salatı",
+              "description": "Milli mətbəx",
+              "price": 10.00,
+              "imageName": "stalicni"
             }
           ]
         },
@@ -135,8 +156,15 @@
               "id": 142,
               "name": "Mercimek şorbası",
               "description": "Qırmızı mərci ilə hazırlanmış şorba",
-              "price": 8.50,
+              "price": 8.00,
               "imageName": "mercimek"
+            },
+            {
+              "id": 143,
+              "name": "Dovğa",
+              "description": "Milli mətbəx",
+              "price": 8.00,
+              "imageName": "dovga"
             }
           ]
         }

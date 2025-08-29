@@ -144,7 +144,7 @@ extension CategoriesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = viewModel.categories[viewModel.selectedCategoryIndex]
         guard let subcategories = category.subcategories, indexPath.row < subcategories.count else { return }
-        let subcategory = subcategories[indexPath.row]
+        let subcategory = subcategories[indexPath.row ]
         guard let products = subcategory.products else { return }
 
         let productsVC = TableViewController<Product, ProductCell>(
@@ -170,18 +170,7 @@ extension CategoriesViewController: CategoriesViewModelDelegate {
     func didFailLoadingMenu(error: Error) {
         print("Error loading menu: \(error.localizedDescription)")
     }
-    
-    @objc private func openCart() {
-        let items = CartManager.shared.items
-        let cartVC = TableViewController<Product, ProductCell>(
-            items: items,
-            configureCell: { cell, product in
-                cell.configure(with: product)
-            },
-            title: "Səbət"
-        )
-        navigationController?.pushViewController(cartVC, animated: true)
-    }
+
 
     @objc private func updateCartBadge() {
         let count = CartManager.shared.items.count
