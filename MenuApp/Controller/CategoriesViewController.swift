@@ -22,15 +22,6 @@ class CategoriesViewController: UIViewController {
     private let tableView = UITableView()
     private var selectedCategoryIndex: Int = 0
     
-    private let cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "cart"), for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = .systemOrange
-        button.layer.cornerRadius = 30
-        button.clipsToBounds = true
-        return button
-    }()
     
     init(viewModel: CategoriesViewModelProtocol) {
         self.viewModel = viewModel
@@ -171,10 +162,5 @@ extension CategoriesViewController: CategoriesViewModelDelegate {
         print("Error loading menu: \(error.localizedDescription)")
     }
 
-
-    @objc private func updateCartBadge() {
-        let count = CartManager.shared.items.count
-        cartButton.setTitle(count > 0 ? "\(count)" : "", for: .normal)
-    }
 }
 
