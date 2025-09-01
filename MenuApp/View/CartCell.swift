@@ -8,9 +8,17 @@
 import UIKit
 
 class CartCell: UITableViewCell {
+    
+    internal var cartItem: CartItem?
+    
     private let nameLabel = UILabel()
     private let countLabel = UILabel()
     private let totalPriceLabel = UILabel()
+    private let minusButton = UIButton(type: .system)
+    private let plusButton = UIButton(type: .system)
+    
+    var onIncrease: (() -> Void)?
+    var onDecrease: (() -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,14 +35,27 @@ class CartCell: UITableViewCell {
         countLabel.textAlignment = .center
         totalPriceLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         totalPriceLabel.textColor = .systemOrange
+        
+        minusButton.setTitle("–", for: .normal)
+        minusButton.titleLabel?.font = .systemFont(ofSize: 15)
+        minusButton.addTarget(self, action: #selector(decreaseTapped), for: .touchUpInside)
+
+        plusButton.setTitle("+", for: .normal)
+        plusButton.titleLabel?.font = .systemFont(ofSize: 15)
+        plusButton.addTarget(self, action: #selector(increaseTapped), for: .touchUpInside)
+
 
         contentView.addSubview(nameLabel)
         contentView.addSubview(countLabel)
         contentView.addSubview(totalPriceLabel)
+        contentView.addSubview(minusButton)
+        contentView.addSubview(plusButton)
 
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         countLabel.translatesAutoresizingMaskIntoConstraints = false
         totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        minusButton.translatesAutoresizingMaskIntoConstraints = false
+        plusButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             
@@ -46,14 +67,33 @@ class CartCell: UITableViewCell {
             countLabel.widthAnchor.constraint(equalToConstant: 40),
 
             totalPriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            totalPriceLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            totalPriceLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
+            minusButton.trailingAnchor.constraint(equalTo: countLabel.leadingAnchor, constant: -5),
+            minusButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            minusButton.widthAnchor.constraint(equalToConstant: 20),
+            minusButton.heightAnchor.constraint(equalToConstant: 20),
+
+            plusButton.leadingAnchor.constraint(equalTo: countLabel.trailingAnchor, constant: 5),
+            plusButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            plusButton.widthAnchor.constraint(equalToConstant: 20),
+            plusButton.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 
+    @objc private func increaseTapped() {
+        onIncrease?()
+    }
 
+    @objc private func decreaseTapped() {
+        onDecrease?()
+    }
+
+    
     func configure(with product: CartItem) {
         nameLabel.text = product.product.name
-        countLabel.text = "x\(product.quantity)"   // quantity əlavə edəcəyik
+        countLabel.text = "x\(product.quantity)"
         totalPriceLabel.text = "\(product.product.price * Double(product.quantity)) ₼"
     }
+
 }

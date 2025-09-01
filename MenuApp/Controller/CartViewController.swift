@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class CartController: TableViewController<CartItem, CartCell> {
     
@@ -21,7 +22,6 @@ class CartController: TableViewController<CartItem, CartCell> {
             title: "Səbət"
         )
         
-        // səbət dəyişəndə TableView refresh etsin
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateCart),
@@ -37,6 +37,30 @@ class CartController: TableViewController<CartItem, CartCell> {
     @objc private func updateCart() {
         self.reloadData(CartManager.shared.items)
     }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = super.tableView(tableView, cellForRowAt: indexPath) as? CartCell else {
+            return UITableViewCell()
+        }
+
+        let cartItem = CartManager.shared.items[indexPath.row]
+
+        cell.onIncrease = { [weak self] in
+            guard let cartItem = cell.cartItem else { return }
+            CartManager.shared.add(cartItem.product)
+            self?.reloadData(CartManager.shared.items)
+        }
+
+        cell.onDecrease = { [weak self] in
+            guard let cartItem = cell.cartItem else { return }
+            CartManager.shared.remove(cartItem.product)
+            self?.reloadData(CartManager.shared.items)
+        }
+
+
+        return cell
+    }
+
     
 
 }
