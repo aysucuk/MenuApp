@@ -9,7 +9,7 @@ import UIKit
 
 class CartCell: UITableViewCell {
     
-    internal var cartItem: CartItem?
+    private var cartItem: CartItem?
     
     private let nameLabel = UILabel()
     private let countLabel = UILabel()
@@ -17,8 +17,8 @@ class CartCell: UITableViewCell {
     private let minusButton = UIButton(type: .system)
     private let plusButton = UIButton(type: .system)
     
-    var onIncrease: (() -> Void)?
-    var onDecrease: (() -> Void)?
+    var onIncrease: ((CartItem) -> Void)?
+    var onDecrease: ((CartItem) -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -82,18 +82,22 @@ class CartCell: UITableViewCell {
     }
 
     @objc private func increaseTapped() {
-        onIncrease?()
+        guard let item = cartItem else { return }
+        onIncrease?(item)
     }
 
     @objc private func decreaseTapped() {
-        onDecrease?()
+        guard let item = cartItem else { return }
+        onDecrease?(item)
     }
 
     
-    func configure(with product: CartItem) {
-        nameLabel.text = product.product.name
-        countLabel.text = "x\(product.quantity)"
-        totalPriceLabel.text = "\(product.product.price * Double(product.quantity)) ₼"
+    func configure(with item: CartItem) {
+        self.cartItem = item
+        nameLabel.text = item.product.name
+        countLabel.text = "x\(item.quantity)"
+        totalPriceLabel.text = "\(item.product.price * Double(item.quantity)) ₼"
     }
+
 
 }

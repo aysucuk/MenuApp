@@ -5,14 +5,17 @@
 //  Created by Aysu Sadikhova on 29.08.25.
 //
 
-import Foundation
 import UIKit
 
 class CartController: TableViewController<CartItem, CartCell> {
     
-    init() {
+    private let viewModel: CartViewModelProtocol
+
+    init(viewModel: CartViewModelProtocol = CartViewModelImpl()) {
+        self.viewModel = viewModel
+
         super.init(
-            items: CartManager.shared.items,
+            items: viewModel.items,
             configureCell: { cell, cartItem in
                 cell.configure(with: cartItem)
             },
@@ -21,46 +24,38 @@ class CartController: TableViewController<CartItem, CartCell> {
             },
             title: "Səbət"
         )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateCart),
-            name: .cartUpdated,
-            object: nil
-        )
+
+        viewModel.onUpdate = { [weak self] in
+            guard let self = self else { return }
+            self.reloadData(self.viewModel.items)
+        }
+
+        viewModel.loadCart()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    @objc private func updateCart() {
-        self.reloadData(CartManager.shared.items)
-    }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = super.tableView(tableView, cellForRowAt: indexPath) as? CartCell else {
             return UITableViewCell()
         }
 
-        let cartItem = CartManager.shared.items[indexPath.row]
+        let cartItem = viewModel.items[indexPath.row]
 
-        cell.onIncrease = { [weak self] in
-            guard let cartItem = cell.cartItem else { return }
-            CartManager.shared.add(cartItem.product)
-            self?.reloadData(CartManager.shared.items)
+        cell.onIncrease = { [weak self] item in
+            guard let self = self else { return }
+            self.viewModel.addToCart(item.product)
         }
 
-        cell.onDecrease = { [weak self] in
-            guard let cartItem = cell.cartItem else { return }
-            CartManager.shared.remove(cartItem.product)
-            self?.reloadData(CartManager.shared.items)
+        cell.onDecrease = { [weak self] item in
+            guard let self = self else { return }
+            self.viewModel.removeFromCart(item.product)
         }
 
+        cell.configure(with: cartItem)
 
         return cell
     }
-
-    
-
 }
