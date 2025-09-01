@@ -18,10 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        let viewModel = CategoriesViewModelImpl()
-
-        let rootVC = CategoriesViewController(viewModel: viewModel)
-
+        let rootVC = CategoriesViewController() 
         let navController = UINavigationController(rootViewController: rootVC)
 
         window = UIWindow(windowScene: windowScene)

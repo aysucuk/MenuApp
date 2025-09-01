@@ -9,7 +9,11 @@ import UIKit
 
 class CategoriesViewController: UIViewController {
     
-    private let viewModel: CategoriesViewModelProtocol
+    private lazy var viewModel: CategoriesViewModelProtocol = {
+        let vm = CategoriesViewModelImpl()
+        vm.delegate = self
+        return vm
+    }()
 
     private let topCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -21,16 +25,6 @@ class CategoriesViewController: UIViewController {
 
     private let tableView = UITableView()
     private var selectedCategoryIndex: Int = 0
-    
-    
-    init(viewModel: CategoriesViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

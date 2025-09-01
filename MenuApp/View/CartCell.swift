@@ -11,11 +11,41 @@ class CartCell: UITableViewCell {
     
     private var cartItem: CartItem?
     
-    private let nameLabel = UILabel()
-    private let countLabel = UILabel()
-    private let totalPriceLabel = UILabel()
-    private let minusButton = UIButton(type: .system)
-    private let plusButton = UIButton(type: .system)
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        return label
+    }()
+    
+    private let countLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textAlignment = .center
+        return label
+    }()
+
+    private let totalPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = .systemOrange
+        return label
+    }()
+    
+    private let minusButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("–", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.addTarget(CartCell.self, action: #selector(decreaseTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private let plusButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
+        button.addTarget(CartCell.self, action: #selector(increaseTapped), for: .touchUpInside)
+        return button
+    }()
     
     var onIncrease: ((CartItem) -> Void)?
     var onDecrease: ((CartItem) -> Void)?
@@ -30,21 +60,7 @@ class CartCell: UITableViewCell {
     }
 
     private func setupUI() {
-        nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        countLabel.font = .systemFont(ofSize: 14, weight: .regular)
-        countLabel.textAlignment = .center
-        totalPriceLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        totalPriceLabel.textColor = .systemOrange
         
-        minusButton.setTitle("–", for: .normal)
-        minusButton.titleLabel?.font = .systemFont(ofSize: 15)
-        minusButton.addTarget(self, action: #selector(decreaseTapped), for: .touchUpInside)
-
-        plusButton.setTitle("+", for: .normal)
-        plusButton.titleLabel?.font = .systemFont(ofSize: 15)
-        plusButton.addTarget(self, action: #selector(increaseTapped), for: .touchUpInside)
-
-
         contentView.addSubview(nameLabel)
         contentView.addSubview(countLabel)
         contentView.addSubview(totalPriceLabel)
@@ -69,15 +85,15 @@ class CartCell: UITableViewCell {
             totalPriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             totalPriceLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
-            minusButton.trailingAnchor.constraint(equalTo: countLabel.leadingAnchor, constant: -5),
+            minusButton.trailingAnchor.constraint(equalTo: countLabel.leadingAnchor, constant: -1),
             minusButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            minusButton.widthAnchor.constraint(equalToConstant: 20),
-            minusButton.heightAnchor.constraint(equalToConstant: 20),
+            minusButton.widthAnchor.constraint(equalToConstant: 10),
+            minusButton.heightAnchor.constraint(equalToConstant: 10),
 
-            plusButton.leadingAnchor.constraint(equalTo: countLabel.trailingAnchor, constant: 5),
+            plusButton.leadingAnchor.constraint(equalTo: countLabel.trailingAnchor, constant: 1),
             plusButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            plusButton.widthAnchor.constraint(equalToConstant: 20),
-            plusButton.heightAnchor.constraint(equalToConstant: 20)
+            plusButton.widthAnchor.constraint(equalToConstant: 10),
+            plusButton.heightAnchor.constraint(equalToConstant: 10)
         ])
     }
 

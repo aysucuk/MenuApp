@@ -55,12 +55,9 @@ class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITabl
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateCartBadge),
-            name: .cartUpdated,
-            object: nil
-        )
+        CartManager.shared.onUpdate = { [weak self] in
+            self?.updateCartBadge()
+        }
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -106,7 +103,7 @@ class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITabl
         if let productCell = cell as? ProductCell, let product = item as? Product {
             productCell.onAddToCart = {
                 CartManager.shared.add(product)
-                NotificationCenter.default.post(name: .cartUpdated, object: nil)
+                self.updateCartBadge()
             }
         }
         

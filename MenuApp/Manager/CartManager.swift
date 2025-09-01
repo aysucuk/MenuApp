@@ -12,6 +12,7 @@ class CartManager {
     private init() {}
     
     private(set) var items: [CartItem] = []
+    var onUpdate: (() -> Void)?
     
     func add(_ product: Product) {
         if let index = items.firstIndex(where: { $0.product.id == product.id }) {
@@ -19,7 +20,7 @@ class CartManager {
         } else {
             items.append(CartItem(product: product, quantity: 1))
         }
-        NotificationCenter.default.post(name: .cartUpdated, object: nil)
+        onUpdate?()
     }
     
     func remove(_ product: Product) {
@@ -29,21 +30,16 @@ class CartManager {
             } else {
                 items.remove(at: index)
             }
-            NotificationCenter.default.post(name: .cartUpdated, object: nil)
+            onUpdate?()
         }
     }
     
     func clear() {
         items.removeAll()
-        NotificationCenter.default.post(name: .cartUpdated, object: nil)
+        onUpdate?()
     }
     
     var totalPrice: Double {
         items.reduce(0) { $0 + $1.subtotal }
     }
 }
-
-extension Notification.Name {
-    static let cartUpdated = Notification.Name("cartUpdated")
-}
-

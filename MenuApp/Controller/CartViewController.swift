@@ -9,28 +9,22 @@ import UIKit
 
 class CartController: TableViewController<CartItem, CartCell> {
     
-    private let viewModel: CartViewModelProtocol
-
-    init(viewModel: CartViewModelProtocol = CartViewModelImpl()) {
-        self.viewModel = viewModel
-
-        super.init(
-            items: viewModel.items,
-            configureCell: { cell, cartItem in
-                cell.configure(with: cartItem)
-            },
-            didSelectItem: { product in
-                print("Tapped on \(product.product.name)")
-            },
-            title: "Səbət"
-        )
-
-        viewModel.onUpdate = { [weak self] in
+    private lazy var viewModel: CartViewModelProtocol = {
+        let vm = CartViewModelImpl()
+        vm.onUpdate = { [weak self] in
             guard let self = self else { return }
-            self.reloadData(self.viewModel.items)
+            self.reloadData(vm.items)
         }
+        return vm
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Səbət"
 
         viewModel.loadCart()
+        
+        self.reloadData(viewModel.items)
     }
 
     required init?(coder: NSCoder) {
