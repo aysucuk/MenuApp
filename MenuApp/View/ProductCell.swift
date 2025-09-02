@@ -110,6 +110,12 @@ class ProductCell: UITableViewCell {
         descriptionLabel.text = product.description
         priceLabel.text = "\(product.price)₼"
         productImageView.image = UIImage(named: product.imageName)
+        
+        if let image = UIImage(named: product.imageName), !product.imageName.isEmpty {
+            productImageView.image = image
+        } else {
+            productImageView.image = UIImage(named: "default") 
+        }
     }
 
     @objc private func addToCartTapped() {

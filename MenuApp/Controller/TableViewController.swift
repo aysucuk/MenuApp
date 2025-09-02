@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewController {
+class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewController, UITableViewDelegate {
 
     var items: [Item]
     internal let tableView = UITableView()
@@ -42,6 +42,7 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
+        tableView.delegate = self
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -72,6 +73,11 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
         CartManager.shared.onUpdate = { [weak self] in
             self?.updateCartBadge()
+        }
+        
+        // + düyməsi yalnız Product üçün
+        if Item.self == Product.self {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewProduct))
         }
     }
     
@@ -116,6 +122,24 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
         }
         let count = CartManager.shared.items.reduce(0) { $0 + $1.quantity }
         cartButtonView.updateBadge(count)
+    }
+    
+    @objc private func addNewProduct() {
+        let addVC = AddProductViewController()
+        addVC.onSave = { [weak self] newProduct in
+            guard let self = self else { return }
+            if var products = self.items as? [Product] {
+                products.append(newProduct)
+                self.reloadData(products as! [Item])
+            }
+        }
+        navigationController?.pushViewController(addVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let item = items[indexPath.row]
+        didSelectItem?(item)
     }
 }
 
