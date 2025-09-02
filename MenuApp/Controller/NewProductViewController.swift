@@ -7,10 +7,17 @@
 
 import UIKit
 
-class AddProductViewController: UIViewController {
+class NewProductViewController: UIViewController {
     
-    var onSave: ((Product) -> Void)?
-    
+    private lazy var viewModel: NewProductViewModelProtocol = {
+        let vm = AddProductViewModelImpl()
+        vm.onProductCreated = { [weak self] product in
+            self?.onSave?(product)
+            self?.navigationController?.popViewController(animated: true)
+        }
+        return vm
+    }()
+
     private let nameField: UITextField = {
         let field = UITextField()
         field.placeholder = "Ad"
@@ -30,46 +37,41 @@ class AddProductViewController: UIViewController {
         return field
     }()
     
+    var onSave: ((Product) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Yeni Yemek"
-        
         setupUI()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(saveTapped))
-    }
-    
-    private func setupUI() {
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Save",
+            style: .done,
+            target: self,
+            action: #selector(saveTapped)
+        )
+    }
+
+    @objc private func saveTapped() {
+        viewModel.createProduct(
+            name: nameField.text,
+            description: descriptionField.text,
+            priceText: priceField.text
+        )
+    }
+
+    private func setupUI() {
         let stack = UIStackView(arrangedSubviews: [nameField, descriptionField, priceField])
         stack.axis = .vertical
         stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(stack)
-        
+
         NSLayoutConstraint.activate([
             stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
-    }
-    
-    @objc private func saveTapped() {
-        guard
-            let name = nameField.text, !name.isEmpty,
-            let description = descriptionField.text, !description.isEmpty,
-            let priceText = priceField.text, let price = Double(priceText)
-        else {
-            // Alert verə bilərik
-            let alert = UIAlertController(title: "Xəta", message: "Bütün sahələri doldurun", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
-            return
-        }
-        
-        let newProduct = Product(id: Int.random(in: 1000...9999), name: name, description: description, price: price, imageName: "")
-        onSave?(newProduct)
-        navigationController?.popViewController(animated: true)
     }
 }

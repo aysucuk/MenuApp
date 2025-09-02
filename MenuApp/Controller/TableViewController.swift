@@ -52,7 +52,6 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
         ])
         
         setupDataSource()
-        reloadData(items)
         
         if showCartButton {
             cartButtonView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +66,6 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
             cartButtonView.onTap = { [weak self] in
                 self?.openCart()
             }
-            updateCartBadge()
         }
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
@@ -75,12 +73,23 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
             self?.updateCartBadge()
         }
         
-        // + düyməsi yalnız Product üçün
         if Item.self == Product.self {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewProduct))
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Item.self == Product.self, let products = items as? [Product] {
+            reloadData(products as! [Item])
+        } else {
+            reloadData(items)
+        }
+        
+        updateCartBadge()
+    }
+
     private func setupDataSource() {
         dataSource = UITableViewDiffableDataSource<Int, Item>(tableView: tableView) { tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? Cell else {
@@ -116,7 +125,7 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
     }
     
     @objc private func updateCartBadge() {
-        if !showCartButton {
+        guard showCartButton else {
             cartButtonView.isHidden = true
             return
         }
@@ -125,7 +134,7 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
     }
     
     @objc private func addNewProduct() {
-        let addVC = AddProductViewController()
+        let addVC = NewProductViewController()
         addVC.onSave = { [weak self] newProduct in
             guard let self = self else { return }
             if var products = self.items as? [Product] {
