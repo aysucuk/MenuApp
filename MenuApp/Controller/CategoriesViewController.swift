@@ -2,7 +2,7 @@
 //  CategoriesViewController.swift
 //  MenuApp
 //
-//  Created by Aysu Sadıxova on 25.08.25.
+//  Created by Aysu Sadikhova on 25.08.25.
 //
 
 import UIKit
@@ -14,7 +14,7 @@ class CategoriesViewController: UIViewController {
         vm.delegate = self
         return vm
     }()
-
+    
     private let topCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -22,10 +22,13 @@ class CategoriesViewController: UIViewController {
         layout.minimumInteritemSpacing = 6
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
-
+    
     private let tableView = UITableView()
     private var selectedCategoryIndex: Int = 0
-
+    
+    private var collectionDataSource: UICollectionViewDiffableDataSource<Int, Category>!
+    private var tableDataSource: UITableViewDiffableDataSource<Int, AnyHashable>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -33,32 +36,61 @@ class CategoriesViewController: UIViewController {
         title = "Menyu"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-
+        
         setupCollectionView()
         setupTableView()
         setupLayout()
-
-        viewModel.delegate = self
+        
         viewModel.loadMenu()
     }
     
     private func setupCollectionView() {
-        topCollectionView.dataSource = self
-        topCollectionView.delegate = self
-        topCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         topCollectionView.showsHorizontalScrollIndicator = false
+        topCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         view.addSubview(topCollectionView)
         topCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionDataSource = UICollectionViewDiffableDataSource<Int, Category>(collectionView: topCollectionView) { collectionView, indexPath, category in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+            cell.contentView.subviews.forEach { $0.removeFromSuperview() }
+            
+            let label = UILabel()
+            label.text = category.name
+            label.textAlignment = .center
+            label.font = .systemFont(ofSize: 14, weight: .medium)
+            cell.contentView.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
+            ])
+            
+            cell.backgroundColor = (indexPath.item == self.viewModel.selectedCategoryIndex) ? .systemOrange : .systemGray5
+            cell.layer.cornerRadius = 12
+            return cell
+        }
+        
+        topCollectionView.delegate = self
     }
-
+    
     private func setupTableView() {
-        tableView.dataSource = self
-        tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tableDataSource = UITableViewDiffableDataSource<Int, AnyHashable>(tableView: tableView) { tableView, indexPath, item in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            if let subcategory = item as? Subcategory {
+                cell.textLabel?.text = subcategory.name
+            } else if let product = item as? Product {
+                cell.textLabel?.text = product.name
+            }
+            return cell
+        }
+        
+        tableView.delegate = self
     }
-
+    
     private func setupLayout() {
         NSLayoutConstraint.activate([
             topCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
@@ -72,56 +104,45 @@ class CategoriesViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func updateCollectionSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Category>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(viewModel.categories)
+        collectionDataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    private func updateTableSnapshot() {
+        guard let category = viewModel.categories[safe: viewModel.selectedCategoryIndex] else { return }
+        var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+        snapshot.appendSections([0])
+        if let subs = category.subcategories {
+            snapshot.appendItems(subs)
+        } else if let products = category.products {
+            snapshot.appendItems(products)
+        }
+        tableDataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
-extension CategoriesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.categories.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.contentView.subviews.forEach { $0.removeFromSuperview() }
-
-        let label = UILabel()
-        label.text = viewModel.categories[indexPath.item].name
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 14, weight: .medium)
-        cell.contentView.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
-        ])
-
-        cell.backgroundColor = (indexPath.item == viewModel.selectedCategoryIndex) ? .systemOrange : .systemGray5
-        cell.layer.cornerRadius = 12
-        return cell
-    }
-
+extension CategoriesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.selectedCategoryIndex = indexPath.item
-        collectionView.reloadData()
-        tableView.reloadData()
+        updateCollectionSnapshot()
+        updateTableSnapshot()
+        
+        for cell in collectionView.visibleCells {
+               if let index = collectionView.indexPath(for: cell) {
+                   cell.backgroundColor = (index.item == viewModel.selectedCategoryIndex) ? .systemOrange : .systemGray5
+               }
+           }
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = viewModel.categories[indexPath.item].name
         let width = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 20, weight: .medium)]).width + 24
         return CGSize(width: width, height: 40)
-    }
-}
-
-
-extension CategoriesViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfRowsInSelectedCategory()
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = viewModel.titleForRow(at: indexPath.row)
-        return cell
     }
 }
 
@@ -129,7 +150,7 @@ extension CategoriesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = viewModel.categories[viewModel.selectedCategoryIndex]
         guard let subcategories = category.subcategories, indexPath.row < subcategories.count else { return }
-        let subcategory = subcategories[indexPath.row ]
+        let subcategory = subcategories[indexPath.row]
         guard let products = subcategory.products else { return }
 
         let productsVC = TableViewController<Product, ProductCell>(
@@ -140,19 +161,23 @@ extension CategoriesViewController: UITableViewDelegate {
             title: subcategory.name
         )
         navigationController?.pushViewController(productsVC, animated: true)
-
     }
 }
 
 extension CategoriesViewController: CategoriesViewModelDelegate {
     func didLoadMenu() {
-        topCollectionView.reloadData()
-        tableView.reloadData()
+        updateCollectionSnapshot()
+        updateTableSnapshot()
     }
 
     func didFailLoadingMenu(error: Error) {
         print("Error loading menu: \(error.localizedDescription)")
     }
-
 }
 
+// Safe index helper
+extension Collection {
+    subscript(safe index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
+    }
+}

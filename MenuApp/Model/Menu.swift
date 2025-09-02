@@ -33,3 +33,32 @@ struct Menu: Codable {
     let categories: [Category]
 }
 
+extension Product: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Product, rhs: Product) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension Category: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Category, rhs: Category) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension Subcategory: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Subcategory, rhs: Subcategory) -> Bool {
+        lhs.id == rhs.id
+    }
+}
