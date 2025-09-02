@@ -42,7 +42,6 @@ class CategoryCell: UITableViewCell {
             titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
         ])
         
-        // Default background
         backgroundColor = .clear
         selectionStyle = .none
     }
