@@ -7,19 +7,58 @@
 
 import UIKit
 
-class ProductCell: UITableViewCell {
+protocol ProductCellDelegate: AnyObject {
+    func productCellDidTapAddToCart(_ cell: ProductCell)
+}
 
-    private let nameLabel = UILabel()
-    private let descriptionLabel = UILabel()
-    private let priceLabel = UILabel()
-    private let productImageView = UIImageView()
-    private let addToCartButton = UIButton(type: .system)
+class ProductCell: UITableViewCell {
+    
+    weak var delegate: ProductCellDelegate?
+
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        return label
+    }()
+    
+    private let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .gray
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    private let priceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .darkGray
+        return label
+    }()
+
+    private let productImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 8
+        return image
+    }()
+    
+    private let addToCartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = .systemOrange
+        return button
+    }()
+    
     
     var onAddToCart: (() -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        
+        addToCartButton.addTarget(self, action: #selector(addToCartTapped), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -27,23 +66,6 @@ class ProductCell: UITableViewCell {
     }
 
     private func setupUI() {
-        productImageView.contentMode = .scaleAspectFill
-        productImageView.clipsToBounds = true
-        productImageView.layer.cornerRadius = 8
-
-        nameLabel.font = .systemFont(ofSize: 18, weight: .medium)
-        
-        descriptionLabel.font = .systemFont(ofSize: 14, weight: .regular)
-        descriptionLabel.textColor = .gray
-        descriptionLabel.numberOfLines = 2
-        
-        priceLabel.font = .systemFont(ofSize: 14, weight: .regular)
-        priceLabel.textColor = .darkGray
-        
-        addToCartButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addToCartButton.tintColor = .systemOrange
-        addToCartButton.addTarget(self, action: #selector(addToCartTapped), for: .touchUpInside)
-
         contentView.addSubview(productImageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(descriptionLabel)
@@ -91,7 +113,7 @@ class ProductCell: UITableViewCell {
     }
 
     @objc private func addToCartTapped() {
-        onAddToCart?()
+        delegate?.productCellDidTapAddToCart(self)
     }
     
 }

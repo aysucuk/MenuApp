@@ -9,40 +9,22 @@ import UIKit
 
 class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    internal let tableView = UITableView()
     var items: [Item]
+    internal let tableView = UITableView()
     private let configureCell: (Cell, Item) -> Void
     private let didSelectItem: ((Item) -> Void)?
-    
-    private let cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "cart"), for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = .systemOrange
-        button.layer.cornerRadius = 30
-        button.clipsToBounds = true
-        return button
-    }()
-    
-    private let cartBadge: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .systemRed
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .bold)
-        label.textAlignment = .center
-        label.layer.cornerRadius = 10
-        label.clipsToBounds = true
-        label.isHidden = true
-        return label
-    }()
+    private let cartButtonView = CartButton()
+    internal let showCartButton: Bool
 
     init(items: [Item],
          configureCell: @escaping (Cell, Item) -> Void,
          didSelectItem: ((Item) -> Void)? = nil,
-         title: String? = nil) {
+         title: String? = nil,
+         showCartButton: Bool = true) {
         self.items = items
         self.configureCell = configureCell
         self.didSelectItem = didSelectItem
+        self.showCartButton = showCartButton
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
@@ -52,42 +34,45 @@ class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITabl
     }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        
-        CartManager.shared.onUpdate = { [weak self] in
-            self?.updateCartBadge()
+            super.viewDidLoad()
+            view.backgroundColor = .systemBackground
+
+            tableView.dataSource = self
+            tableView.delegate = self
+            tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
+            tableView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(tableView)
+            
+            NSLayoutConstraint.activate([
+                tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+                tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+
+            if showCartButton {
+                cartButtonView.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(cartButtonView)
+                view.bringSubviewToFront(cartButtonView)
+                NSLayoutConstraint.activate([
+                    cartButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+                    cartButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+                    cartButtonView.widthAnchor.constraint(equalToConstant: 60),
+                    cartButtonView.heightAnchor.constraint(equalToConstant: 60)
+                ])
+                cartButtonView.onTap = { [weak self] in
+                    self?.openCart()
+                }
+                updateCartBadge()
+            }
+
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
+            
+            CartManager.shared.onUpdate = { [weak self] in
+                self?.updateCartBadge()
+            }
         }
 
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
-        
-        view.addSubview(tableView)
-        cartButton.addTarget(self, action: #selector(openCart), for: .touchUpInside)
-        view.addSubview(cartButton)
-        view.addSubview(cartBadge)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        cartButton.translatesAutoresizingMaskIntoConstraints = false
-        cartBadge.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            cartButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            cartButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            cartButton.widthAnchor.constraint(equalToConstant: 60),
-            cartButton.heightAnchor.constraint(equalToConstant: 60),
-            
-            cartBadge.topAnchor.constraint(equalTo: cartButton.topAnchor, constant: -5),
-            cartBadge.trailingAnchor.constraint(equalTo: cartButton.trailingAnchor, constant: 5),
-            cartBadge.widthAnchor.constraint(greaterThanOrEqualToConstant: 20),
-            cartBadge.heightAnchor.constraint(equalToConstant: 20)
-        ])
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -100,11 +85,8 @@ class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITabl
         let item = items[indexPath.row]
         configureCell(cell, item)
         
-        if let productCell = cell as? ProductCell, let product = item as? Product {
-            productCell.onAddToCart = {
-                CartManager.shared.add(product)
-                self.updateCartBadge()
-            }
+        if let productCell = cell as? ProductCell {
+            productCell.delegate = self
         }
         
         return cell
@@ -127,16 +109,29 @@ class TableViewController<Item, Cell: UITableViewCell>: UIViewController, UITabl
             configureCell: { cell, product in
                 cell.configure(with: product)
             },
-            title: "Səbət"
+            title: "Səbət",
+            showCartButton: false
         )
         navigationController?.pushViewController(cartVC, animated: true)
     }
     
     @objc private func updateCartBadge() {
+        if !showCartButton {
+            cartButtonView.isHidden = true
+            return
+        }
         let count = CartManager.shared.items.reduce(0) { $0 + $1.quantity }
-        cartBadge.text = "\(count)"
-        cartBadge.isHidden = count == 0
+        cartButtonView.updateBadge(count)
     }
     
 }
 
+extension TableViewController: ProductCellDelegate {
+    func productCellDidTapAddToCart(_ cell: ProductCell) {
+        if let indexPath = tableView.indexPath(for: cell),
+           let product = items[indexPath.row] as? Product {
+            CartManager.shared.add(product)
+            updateCartBadge()
+        }
+    }
+}

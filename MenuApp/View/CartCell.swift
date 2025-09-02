@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol CartCellDelegate: AnyObject {
+    func cartCellDidIncrease(_ cell: CartCell)
+    func cartCellDidDecrease(_ cell: CartCell)
+}
+
 class CartCell: UITableViewCell {
     
+    weak var delegate: CartCellDelegate?
     private var cartItem: CartItem?
     
     private let nameLabel: UILabel = {
@@ -35,7 +41,6 @@ class CartCell: UITableViewCell {
         let button = UIButton(type: .system)
         button.setTitle("–", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
-        button.addTarget(CartCell.self, action: #selector(decreaseTapped), for: .touchUpInside)
         return button
     }()
     
@@ -43,16 +48,15 @@ class CartCell: UITableViewCell {
         let button = UIButton(type: .system)
         button.setTitle("+", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15)
-        button.addTarget(CartCell.self, action: #selector(increaseTapped), for: .touchUpInside)
         return button
     }()
-    
-    var onIncrease: ((CartItem) -> Void)?
-    var onDecrease: ((CartItem) -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        
+        minusButton.addTarget(self, action: #selector(decreaseTapped), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(increaseTapped), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -98,13 +102,11 @@ class CartCell: UITableViewCell {
     }
 
     @objc private func increaseTapped() {
-        guard let item = cartItem else { return }
-        onIncrease?(item)
+        delegate?.cartCellDidIncrease(self)
     }
 
     @objc private func decreaseTapped() {
-        guard let item = cartItem else { return }
-        onDecrease?(item)
+        delegate?.cartCellDidDecrease(self)
     }
 
     

@@ -144,8 +144,6 @@ extension CategoriesViewController: UITableViewDelegate {
     }
 }
 
-
-
 extension CategoriesViewController: CategoriesViewModelDelegate {
     func didLoadMenu() {
         topCollectionView.reloadData()

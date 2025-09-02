@@ -8,7 +8,7 @@
 import UIKit
 
 class CartController: TableViewController<CartItem, CartCell> {
-    
+
     private lazy var viewModel: CartViewModelProtocol = {
         let vm = CartViewModelImpl()
         vm.onUpdate = { [weak self] in
@@ -17,14 +17,11 @@ class CartController: TableViewController<CartItem, CartCell> {
         }
         return vm
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Səbət"
-
         viewModel.loadCart()
-        
-        self.reloadData(viewModel.items)
     }
 
     required init?(coder: NSCoder) {
@@ -36,20 +33,27 @@ class CartController: TableViewController<CartItem, CartCell> {
             return UITableViewCell()
         }
 
+        cell.delegate = self
+
         let cartItem = viewModel.items[indexPath.row]
-
-        cell.onIncrease = { [weak self] item in
-            guard let self = self else { return }
-            self.viewModel.addToCart(item.product)
-        }
-
-        cell.onDecrease = { [weak self] item in
-            guard let self = self else { return }
-            self.viewModel.removeFromCart(item.product)
-        }
-
         cell.configure(with: cartItem)
 
         return cell
     }
+}
+
+extension CartController: CartCellDelegate {
+    
+    func cartCellDidIncrease(_ cell: CartCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let item = viewModel.items[indexPath.row]
+        viewModel.addToCart(item.product)
+    }
+
+    func cartCellDidDecrease(_ cell: CartCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let item = viewModel.items[indexPath.row]
+        viewModel.removeFromCart(item.product)
+    }
+    
 }
