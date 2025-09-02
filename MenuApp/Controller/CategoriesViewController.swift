@@ -74,19 +74,21 @@ class CategoriesViewController: UIViewController {
     }
     
     private func setupTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryCell.self, forCellReuseIdentifier: "categoryCell")
+        tableView.separatorStyle = .none
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableDataSource = UITableViewDiffableDataSource<Int, AnyHashable>(tableView: tableView) { tableView, indexPath, item in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryCell
             if let subcategory = item as? Subcategory {
-                cell.textLabel?.text = subcategory.name
+                cell.configure(with: subcategory.name)
             } else if let product = item as? Product {
-                cell.textLabel?.text = product.name
+                cell.configure(with: product.name)
             }
             return cell
         }
+
         
         tableView.delegate = self
     }
@@ -98,10 +100,10 @@ class CategoriesViewController: UIViewController {
             topCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             topCollectionView.heightAnchor.constraint(equalToConstant: 60),
 
-            tableView.topAnchor.constraint(equalTo: topCollectionView.bottomAnchor, constant: 12),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            tableView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60),
+            tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            tableView.heightAnchor.constraint(equalToConstant: 300)
         ])
     }
     
@@ -142,11 +144,15 @@ extension CategoriesViewController: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = viewModel.categories[indexPath.item].name
         let width = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 20, weight: .medium)]).width + 24
-        return CGSize(width: width, height: 40)
+        return CGSize(width: width, height: 45)
     }
 }
 
 extension CategoriesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = viewModel.categories[viewModel.selectedCategoryIndex]
         guard let subcategories = category.subcategories, indexPath.row < subcategories.count else { return }
@@ -163,6 +169,7 @@ extension CategoriesViewController: UITableViewDelegate {
         navigationController?.pushViewController(productsVC, animated: true)
     }
 }
+
 
 extension CategoriesViewController: CategoriesViewModelDelegate {
     func didLoadMenu() {
