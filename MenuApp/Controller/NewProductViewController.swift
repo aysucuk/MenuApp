@@ -11,9 +11,24 @@ class AddProductViewController: UIViewController {
     
     var onSave: ((Product) -> Void)?
     
-    private let nameField = UITextField()
-    private let descriptionField = UITextField()
-    private let priceField = UITextField()
+    private let nameField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Ad"
+        return field
+    }()
+    
+    private let descriptionField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Təsvir"
+        return field
+    }()
+    
+    private let priceField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Qiymət"
+        field.keyboardType = .decimalPad
+        return field
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +40,6 @@ class AddProductViewController: UIViewController {
     }
     
     private func setupUI() {
-        nameField.placeholder = "Ad"
-        descriptionField.placeholder = "Təsvir"
-        priceField.placeholder = "Qiymət"
-        priceField.keyboardType = .decimalPad
         
         let stack = UIStackView(arrangedSubviews: [nameField, descriptionField, priceField])
         stack.axis = .vertical
