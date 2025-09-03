@@ -13,24 +13,25 @@ struct Product: Codable {
     let description: String
     let price: Double
     let imageName: String
+    let subcategoryId: Int
 }
 
 struct Subcategory: Codable {
     let id: Int
     let name: String
-    let products: [Product]?
-    let subcategories: [Subcategory]?
+    var products: [Product]?
+    var subcategories: [Subcategory]?
 }
 
 struct Category: Codable {
     let id: Int
     let name: String
-    let subcategories: [Subcategory]?
-    let products: [Product]?
+    var subcategories: [Subcategory]?
+    var products: [Product]?
 }
 
 struct Menu: Codable {
-    let categories: [Category]
+    var categories: [Category]
 }
 
 extension Product: Hashable {

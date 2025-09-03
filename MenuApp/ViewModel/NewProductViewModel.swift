@@ -9,18 +9,24 @@ import Foundation
 
 protocol NewProductViewModelProtocol: AnyObject {
     var onProductCreated: ((Product) -> Void)? { get set }
-    func createProduct(name: String?, description: String?, priceText: String?)
+    func createProduct(name: String?, description: String?, priceText: String?, subcategoryId: Int?)
 }
 
 class AddProductViewModelImpl: NewProductViewModelProtocol {
     
     var onProductCreated: ((Product) -> Void)?
     
-    func createProduct(name: String?, description: String?, priceText: String?) {
+    func createProduct(
+        name: String?,
+        description: String?,
+        priceText: String?,
+        subcategoryId: Int?
+    ) {
         guard
             let name = name, !name.isEmpty,
             let description = description, !description.isEmpty,
-            let priceText = priceText, let price = Double(priceText)
+            let priceText = priceText,
+            let price = Double(priceText)
         else {
             return
         }
@@ -30,9 +36,11 @@ class AddProductViewModelImpl: NewProductViewModelProtocol {
             name: name,
             description: description,
             price: price,
-            imageName: ""
+            imageName: "",
+            subcategoryId: subcategoryId ?? 0
         )
         
         onProductCreated?(product)
     }
 }
+

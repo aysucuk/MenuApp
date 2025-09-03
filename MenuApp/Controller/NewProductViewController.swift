@@ -9,6 +9,8 @@ import UIKit
 
 class NewProductViewController: UIViewController {
     
+    var subcategoryId: Int?
+    
     private lazy var viewModel: NewProductViewModelProtocol = {
         let vm = AddProductViewModelImpl()
         vm.onProductCreated = { [weak self] product in
@@ -57,7 +59,8 @@ class NewProductViewController: UIViewController {
         viewModel.createProduct(
             name: nameField.text,
             description: descriptionField.text,
-            priceText: priceField.text
+            priceText: priceField.text,
+            subcategoryId: subcategoryId
         )
     }
 

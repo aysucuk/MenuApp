@@ -15,6 +15,7 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
     private let didSelectItem: ((Item) -> Void)?
     private let cartButtonView = CartButton()
     internal let showCartButton: Bool
+    var subcategoryId: Int?
     
     private var dataSource: UITableViewDiffableDataSource<Int, Item>!
 
@@ -81,14 +82,21 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if Item.self == Product.self, let products = items as? [Product] {
-            reloadData(products as! [Item])
+        if Item.self == Product.self {
+            if let subId = self.subcategoryId {
+               
+                let products = MenuDataManager.shared.getProductsForSubcategory(subcategoryId: subId)
+                reloadData(products as! [Item])
+            } else {
+                reloadData(items)
+            }
         } else {
             reloadData(items)
         }
         
         updateCartBadge()
     }
+
 
     private func setupDataSource() {
         dataSource = UITableViewDiffableDataSource<Int, Item>(tableView: tableView) { tableView, indexPath, item in
@@ -134,22 +142,73 @@ class TableViewController<Item: Hashable, Cell: UITableViewCell>: UIViewControll
     }
     
     @objc private func addNewProduct() {
-        let addVC = NewProductViewController()
-        addVC.onSave = { [weak self] newProduct in
-            guard let self = self else { return }
-            if var products = self.items as? [Product] {
-                products.append(newProduct)
-                self.reloadData(products as! [Item])
-            }
-        }
-        navigationController?.pushViewController(addVC, animated: true)
-    }
+          guard let subcategoryId = self.subcategoryId else { return }
+          
+          let addVC = NewProductViewController()
+          addVC.subcategoryId = subcategoryId
+          
+          addVC.onSave = { [weak self] newProduct in
+              guard let self = self else { return }
+              
+              MenuDataManager.shared.addProduct(newProduct, to: subcategoryId)
+              
+              let products = MenuDataManager.shared.getProductsForSubcategory(subcategoryId: subcategoryId)
+              self.reloadData(products as! [Item])
+          }
+          
+          navigationController?.pushViewController(addVC, animated: true)
+      }
+
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         didSelectItem?(item)
     }
+    
+    private func findSubcategory(by id: Int, in categories: [Category]) -> Subcategory? {
+        for category in categories {
+            if let subs = category.subcategories {
+                if let found = findSubcategoryRecursive(subId: id, subcategories: subs) {
+                    return found
+                }
+            }
+        }
+        return nil
+    }
+
+    private func findSubcategoryRecursive(subId: Int, subcategories: [Subcategory]) -> Subcategory? {
+        for sub in subcategories {
+            if sub.id == subId {
+                return sub
+            }
+            if let nestedSubs = sub.subcategories {
+                if let found = findSubcategoryRecursive(subId: subId, subcategories: nestedSubs) {
+                    return found
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func saveProductsToUserDefaults(_ products: [Product]) {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(products) {
+            UserDefaults.standard.set(data, forKey: "products")
+        }
+    }
+
+    private func loadProductsFromUserDefaults() -> [Product] {
+        let decoder = JSONDecoder()
+        if let data = UserDefaults.standard.data(forKey: "products"),
+           let savedProducts = try? decoder.decode([Product].self, from: data) {
+            return savedProducts
+        }
+        return []
+    }
+
+
 }
 
 extension TableViewController: ProductCellDelegate {

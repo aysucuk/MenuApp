@@ -31,6 +31,8 @@ class CategoryCell: UITableViewCell {
         containerView.addSubview(titleLabel)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
