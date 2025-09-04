@@ -44,7 +44,7 @@ class NewProductViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Yeni Yemek"
+        title = "Yeni Məhsul"
         setupUI()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
